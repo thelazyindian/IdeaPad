@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +64,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
         ideaViewHolder.name.setText(idea.getName());
 
         //If clicked once, remove that card
-        ideaViewHolder.card.setOnClickListener(new View.OnClickListener() {
+        ideaViewHolder.viewForeground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -96,7 +97,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
 
         //If long pressed, launch the edit dialog
-        ideaViewHolder.card.setOnLongClickListener(new View.OnLongClickListener() {
+        ideaViewHolder.viewForeground.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
 
@@ -177,23 +178,49 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
         return RealmController.getInstance().getAllBooks().size();
     }
 
+    public void removeItem(int position) {
+        realm.beginTransaction();
+
+        RealmController.with().getAllBooks().remove(position);
+
+        realm.commitTransaction();
+
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Idea idea, int position) {
+        realm.beginTransaction();
+
+        RealmResults<Idea> results = RealmController.with().getAllBooks();
+        results.add(idea);
+
+        realm.commitTransaction();
+
+        notifyItemInserted(position);
+    }
+
+
     public class IdeaViewHolder extends RecyclerView.ViewHolder {
 
-        private CardView card;
+        public CardView viewForeground;
 
         private TextView tag;
 
         private TextView name;
 
+        public RelativeLayout viewBackground;
+
 
         public IdeaViewHolder(View itemView) {
             super(itemView);
 
-            card = itemView.findViewById(R.id.card_idea);
+            viewForeground = itemView.findViewById(R.id.card_idea);
 
             tag = itemView.findViewById(R.id.tag);
 
             name = itemView.findViewById(R.id.name);
+
+            viewBackground = itemView.findViewById(R.id.view_background);
         }
     }
 }

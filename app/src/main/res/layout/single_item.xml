@@ -1,14 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/framelayoutparent"
+    android:orientation="vertical">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view_background"
+        android:background="@color/bg_row_background">
+
+        <ImageView
+            android:layout_width="@dimen/ic_delete"
+            android:layout_height="@dimen/ic_delete"
+            android:id="@+id/delete_icon"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padd_10"
+            android:src="@drawable/baseline_delete_white_18"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padd_10"
+            android:layout_toLeftOf="@+id/delete_icon"
+            android:text="@string/delete"
+            android:textColor="#fff"
+            android:textSize="13dp"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view_foreground">
+
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:id="@+id/card_idea"
     style="@style/AppTheme.Card.Margins"
-    android:paddingBottom="@dimen/margin_large"
-    android:paddingLeft="@dimen/margin_large"
-    android:paddingRight="@dimen/margin_large"
-    android:paddingTop="@dimen/margin_large">
+    card_view:cardElevation="2dp"
+    card_view:cardCornerRadius="5dp"
+    android:background="@android:color/white">
 
 
     <LinearLayout
@@ -21,13 +60,14 @@
             android:layout_width="130dp"
             android:id="@+id/tag"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|start" />
+            android:gravity="center_vertical|start"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/margin_large">
+            android:paddingBottom="@dimen/margin_large"
+            android:padding="@dimen/padd_10">
 
             <TextView
                 android:id="@+id/name"
@@ -40,10 +80,13 @@
                 android:paddingTop="@dimen/margin_large"
                 android:textColor="#555555"
                 android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:gravity="center_vertical"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
+    </RelativeLayout>
+</FrameLayout>

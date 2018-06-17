@@ -1,14 +1,19 @@
 package com.jashasweejena.ideapad.activity;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -18,6 +23,7 @@ import com.jashasweejena.ideapad.R;
 import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.adapters.RealmIdeaAdapter;
 import com.jashasweejena.ideapad.app.Prefs;
+import com.jashasweejena.ideapad.app.RecyclerTouchItemHelper;
 import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
 
@@ -27,10 +33,13 @@ import java.util.Random;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerTouchItemHelper.RecyclerTouchListener{
 
-    private FloatingActionButton fab;
+    private com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton fab;
+    private final static String TAG = MainActivity.class.getSimpleName();
     private RecyclerView recyclerView;
+    private CoordinatorLayout coordinatorLayout;
+    private Toolbar toolbar;
     private IdeaAdapter recyclerViewAdapter;
     private Realm realm;
     private LayoutInflater layoutInflater;
@@ -42,12 +51,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        coordinatorLayout = findViewById(R.id.coordinatorlayout);
+//        toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         realm = RealmController.with().getRealm();
 
+
         recyclerView = findViewById(R.id.recycler);
-
-
-
 
 
         setUpRecycler();
@@ -62,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         setRealmAdapter(listOfIdeas);
 
-        fab = findViewById(R.id.fab);
+        fab = (com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton) (findViewById(R.id.fab));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,16 +93,14 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
 
 
-
                                 //Create a new Idea instance which will store information
                                 //regarding the idea in respective fields and go into
                                 //the realm database
 
 
-                                if(editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
+                                if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
                                     Toast.makeText(MainActivity.this, "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
+                                } else {
 
                                     realm.beginTransaction();
 
@@ -139,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void setUpRecycler() {
 
+
+        //Assign ItemTouchHelper to RecyclerView.
+        ItemTouchHelper.SimpleCallback itemTouchHelper = new RecyclerTouchItemHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView);
+
         //Set up Vertical LinearLayoutManager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -173,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         dummyIdea3.setName("Dumb");
         ideaList.add(dummyIdea3);
 
-        for(Idea item : ideaList) {
+        for (Idea item : ideaList) {
 
             //Copy all the dummy ideas to realm
 
@@ -184,5 +199,38 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+
+        if(viewHolder instanceof IdeaAdapter.IdeaViewHolder) {
+
+            //Store the object to be हलाल so that you can resurrect it back, if you want.
+            final Idea deletedIdea = RealmController.getInstance().getAllBooks().get(viewHolder.getAdapterPosition());
+            final int deletedPosition = viewHolder.getAdapterPosition();
+            String deletedName = deletedIdea.getName();
+
+            Log.d(TAG, "onSwiped: " + "Adapter position before deletion " + deletedPosition);
+            Log.d(TAG, "onSwiped: " + "Name of Item before deletion " + deletedName);
+
+            recyclerViewAdapter.removeItem(deletedPosition);
+
+            //As item is not removed, show SnackBar
+
+//            Snackbar snackbar = Snackbar.make(coordinatorLayout, deletedName + " Removed from cart", Snackbar.LENGTH_SHORT);
+//            snackbar.setAction("UNDO", new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    //Restore the deleted item.
+//                    recyclerViewAdapter.restoreItem(deletedIdea, deletedPosition);
+//
+//                }
+//            });
+//            snackbar.setActionTextColor(Color.YELLOW);
+//            snackbar.show();
+
+        }
     }
 }

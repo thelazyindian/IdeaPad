@@ -30,6 +30,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation "com.android.support:support-core-utils:27.1.1"
     implementation 'com.robertlevonyan.view:CustomFloatingActionButton:2.0.5'
+    implementation 'com.stephentuso:welcome:1.4.1'
     // Realm
     implementation 'io.realm:realm-android:0.82.1'
     // RecyclerView
