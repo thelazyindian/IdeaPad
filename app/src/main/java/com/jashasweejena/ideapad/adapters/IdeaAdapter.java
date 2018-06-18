@@ -179,24 +179,31 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
     }
 
     public void removeItem(int position) {
-        realm.beginTransaction();
 
-        RealmController.with().getAllBooks().remove(position);
+        Realm r = RealmController.getInstance().getRealm();
 
-        realm.commitTransaction();
+        r.beginTransaction();
+
+        RealmResults<Idea> results = realm.where(Idea.class).findAll();
+        results.remove(position);
+
+        r.commitTransaction();
 
         notifyItemRemoved(position);
     }
 
     public void restoreItem(Idea idea, int position) {
-        realm.beginTransaction();
 
-        RealmResults<Idea> results = RealmController.with().getAllBooks();
-        results.add(idea);
+            Log.d(TAG, "restoreItem: " + idea.getName());
 
-        realm.commitTransaction();
+            realm.beginTransaction();
 
-        notifyItemInserted(position);
+            realm.copyToRealm(idea);
+
+            realm.commitTransaction();
+
+            notifyDataSetChanged();
+
     }
 
 

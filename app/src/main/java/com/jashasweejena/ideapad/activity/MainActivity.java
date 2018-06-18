@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,7 @@ import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity implements RecyclerTouchItemHelper.RecyclerTouchListener{
 
-    private com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton fab;
+    private FloatingActionButton fab;
     private final static String TAG = MainActivity.class.getSimpleName();
     private RecyclerView recyclerView;
     private CoordinatorLayout coordinatorLayout;
@@ -51,14 +50,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        coordinatorLayout = findViewById(R.id.coordinatorlayout);
-//        toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        coordinatorLayout = findViewById(R.id.coordinatorlayout);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         realm = RealmController.with().getRealm();
 
-
+        coordinatorLayout = findViewById(R.id.coordinatorlayout);
         recyclerView = findViewById(R.id.recycler);
 
 
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
         setRealmAdapter(listOfIdeas);
 
-        fab = (com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton) (findViewById(R.id.fab));
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
     public void setRealmAdapter(RealmResults<Idea> listOfIdeas) {
 
         RealmIdeaAdapter realmAdapter = new RealmIdeaAdapter(this, listOfIdeas, true);
-        //Join the RecyclerView Adapter and the realmAda                                                      pter
+        //Join the RecyclerView Adapter and the realmAdapter
         recyclerViewAdapter.setRealmBaseAdapter(realmAdapter);
 
         //Redraw the RecyclerView layout
@@ -202,13 +202,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, final int deletedPosition) {
 
         if(viewHolder instanceof IdeaAdapter.IdeaViewHolder) {
 
             //Store the object to be हलाल so that you can resurrect it back, if you want.
-            final Idea deletedIdea = RealmController.getInstance().getAllBooks().get(viewHolder.getAdapterPosition());
-            final int deletedPosition = viewHolder.getAdapterPosition();
+            final Idea deletedIdea = RealmController.getInstance().getAllBooks().get(deletedPosition);
             String deletedName = deletedIdea.getName();
 
             Log.d(TAG, "onSwiped: " + "Adapter position before deletion " + deletedPosition);
@@ -216,20 +215,28 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
             recyclerViewAdapter.removeItem(deletedPosition);
 
+            if (RealmController.getInstance().getAllBooks().size() == 0) {
+
+                Prefs.with(getApplicationContext()).setPreLoad(false);
+
+            }
+
             //As item is not removed, show SnackBar
 
-//            Snackbar snackbar = Snackbar.make(coordinatorLayout, deletedName + " Removed from cart", Snackbar.LENGTH_SHORT);
+            //Restore item functionality is derped. Disable that for now.
+
+            Snackbar snackbar = Snackbar.make(coordinatorLayout, deletedName + " Removed from cart", Snackbar.LENGTH_SHORT);
 //            snackbar.setAction("UNDO", new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
 //
 //                    //Restore the deleted item.
-//                    recyclerViewAdapter.restoreItem(deletedIdea, deletedPosition);
+////                    recyclerViewAdapter.restoreItem(deletedIdea, deletedPosition);
 //
 //                }
 //            });
-//            snackbar.setActionTextColor(Color.YELLOW);
-//            snackbar.show();
+            snackbar.setActionTextColor(Color.YELLOW);
+            snackbar.show();
 
         }
     }
