@@ -192,9 +192,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
         notifyItemRemoved(position);
     }
 
-    public void restoreItem(Idea idea, int position) {
-
-            Log.d(TAG, "restoreItem: " + idea.getName());
+    public void restoreItem(Idea idea) {
 
             realm.beginTransaction();
 

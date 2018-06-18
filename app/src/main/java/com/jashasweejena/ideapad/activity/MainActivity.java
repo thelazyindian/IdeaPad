@@ -2,12 +2,12 @@ package com.jashasweejena.ideapad.activity;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -32,10 +32,10 @@ import java.util.Random;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends AppCompatActivity implements RecyclerTouchItemHelper.RecyclerTouchListener{
+public class MainActivity extends AppCompatActivity implements RecyclerTouchItemHelper.RecyclerTouchListener {
 
-    private FloatingActionButton fab;
     private final static String TAG = MainActivity.class.getSimpleName();
+    private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private CoordinatorLayout coordinatorLayout;
     private Toolbar toolbar;
@@ -61,14 +61,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
         coordinatorLayout = findViewById(R.id.coordinatorlayout);
         recyclerView = findViewById(R.id.recycler);
 
-
         setUpRecycler();
-
-//        if(!Prefs.with(this).getPreLoad()) {
-//            setRealmData();
-//        }
-
-//        setRealmData();
 
         listOfIdeas = RealmController.getInstance().getAllBooks();
 
@@ -204,11 +197,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, final int deletedPosition) {
 
-        if(viewHolder instanceof IdeaAdapter.IdeaViewHolder) {
+        if (viewHolder instanceof IdeaAdapter.IdeaViewHolder) {
 
             //Store the object to be हलाल so that you can resurrect it back, if you want.
             final Idea deletedIdea = RealmController.getInstance().getAllBooks().get(deletedPosition);
-            String deletedName = deletedIdea.getName();
+
+            //Store the fields of current idea object which
+            //is gonna be deleted and then while restoring it
+            //create a new Realm object and set these fields
+            //to new object and pass the new object to restoreItem.
+            final String deletedName = deletedIdea.getName();
+            final String deletedTag = deletedIdea.getTag();
+            final Long deletedId = deletedIdea.getId();
 
             Log.d(TAG, "onSwiped: " + "Adapter position before deletion " + deletedPosition);
             Log.d(TAG, "onSwiped: " + "Name of Item before deletion " + deletedName);
@@ -221,20 +221,24 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
             }
 
-            //As item is not removed, show SnackBar
-
-            //Restore item functionality is derped. Disable that for now.
+            //As item is removed, show SnackBar
 
             Snackbar snackbar = Snackbar.make(coordinatorLayout, deletedName + " Removed from cart", Snackbar.LENGTH_SHORT);
-//            snackbar.setAction("UNDO", new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    //Restore the deleted item.
-////                    recyclerViewAdapter.restoreItem(deletedIdea, deletedPosition);
-//
-//                }
-//            });
+            snackbar.setAction("UNDO", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    //Create new Idea object with fields of old object and use it instead.
+                    Idea newIdea = new Idea();
+                    newIdea.setId(deletedId);
+                    newIdea.setTag(deletedTag);
+                    newIdea.setName(deletedName);
+
+                    //Restore the deleted item.
+                    recyclerViewAdapter.restoreItem(newIdea);
+
+                }
+            });
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
 
