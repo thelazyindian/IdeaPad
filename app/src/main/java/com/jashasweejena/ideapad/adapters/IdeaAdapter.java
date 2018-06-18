@@ -6,24 +6,17 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jashasweejena.ideapad.R;
-import com.jashasweejena.ideapad.activity.MainActivity;
-import com.jashasweejena.ideapad.app.Prefs;
 import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
-
-import org.w3c.dom.Text;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -31,15 +24,14 @@ import io.realm.RealmResults;
 public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
 
-    private final String TAG = IdeaAdapter.class.getSimpleName();
     final Context context;
+    private final String TAG = IdeaAdapter.class.getSimpleName();
     private Realm realm;
     private LayoutInflater inflater;
 
     public IdeaAdapter(Context context) {
         this.context = context;
     }
-
 
     @NonNull
     @Override
@@ -63,39 +55,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
         ideaViewHolder.tag.setText(idea.getTag());
         ideaViewHolder.name.setText(idea.getName());
 
-        //If clicked once, remove that card
-        ideaViewHolder.viewForeground.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                RealmResults<Idea> listOfIdeas = realm.where(Idea.class).findAll();
-
-                //To get the idea class at this position.
-                Idea idea = listOfIdeas.get(position);
-                String name = idea.getName(); //Store name before deleting the object so that we can display the
-                // name in a toast.
-
-                realm.beginTransaction();
-
-                listOfIdeas.remove(position);
-
-                //Means, now everything in the listOfIdeas is deleted
-                if (listOfIdeas.size() == 0) {
-
-                    Prefs.with(context).setPreLoad(false);
-
-                }
-
-                realm.commitTransaction();
-                notifyDataSetChanged();
-
-                //Inform the user by a toast that the object was removed
-                Toast.makeText(context, name + " Was deleted", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-
         //If long pressed, launch the edit dialog
         ideaViewHolder.viewForeground.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -104,7 +63,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View content = layoutInflater.inflate(R.layout.edit_idea, null, false);
-
 
                 final EditText editName = content.findViewById(R.id.editName);
                 final EditText editTag = content.findViewById(R.id.editTag);
@@ -118,7 +76,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-
                                 RealmResults<Idea> listOfIdeas = realm.where(Idea.class).findAll();
 
                                 Idea idea = listOfIdeas.get(position);
@@ -130,15 +87,13 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                                 name = editName.getText().toString();
                                 tag = editTag.getText().toString();
 
-                                if(editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
+                                if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
                                     Toast.makeText(context.getApplicationContext(), "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();
                                     realm.commitTransaction();
                                 } else {
 
-
                                     idea.setName(name);
                                     idea.setTag(tag);
-
 
                                     realm.copyToRealm(idea);
 
@@ -147,7 +102,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                                     notifyDataSetChanged();
 
                                 }
-
 
                             }
                         })
@@ -168,9 +122,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
             }
         });
 
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -194,26 +146,22 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
     public void restoreItem(Idea idea) {
 
-            realm.beginTransaction();
+        realm.beginTransaction();
 
-            realm.copyToRealm(idea);
+        realm.copyToRealm(idea);
 
-            realm.commitTransaction();
+        realm.commitTransaction();
 
-            notifyDataSetChanged();
+        notifyDataSetChanged();
 
     }
-
 
     public class IdeaViewHolder extends RecyclerView.ViewHolder {
 
         public CardView viewForeground;
-
-        private TextView tag;
-
-        private TextView name;
-
         public RelativeLayout viewBackground;
+        private TextView tag;
+        private TextView name;
 
 
         public IdeaViewHolder(View itemView) {
