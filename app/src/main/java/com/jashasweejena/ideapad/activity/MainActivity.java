@@ -1,5 +1,6 @@
 package com.jashasweejena.ideapad.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -155,6 +158,28 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
         recyclerViewAdapter = new IdeaAdapter(this);
         recyclerView.setAdapter(recyclerViewAdapter);
+
+        runAnimation(recyclerView, 0);
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    private void runAnimation(RecyclerView recyclerView, int type) {
+
+        Context context = recyclerView.getContext();
+        LayoutAnimationController controller = null;
+
+        switch(type){
+            case 0 : //Fall down animation
+                controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down);
+        }
+
+        if(controller != null) {
+
+            recyclerView.setLayoutAnimation(controller);
+            recyclerView.scheduleLayoutAnimation();
+
+        }
+
     }
 
     public void setRealmData() {

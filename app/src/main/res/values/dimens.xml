@@ -14,5 +14,5 @@
     <dimen name="imge_book_detail">80dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <integer name="animation_duration">300</integer>
+    <integer name="animation_duration">1000</integer>
 </resources>
