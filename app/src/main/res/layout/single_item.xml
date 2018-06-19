@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/view_background"
-        android:background="@color/bg_row_background">
+        android:background="@android:color/holo_red_dark">
 
         <ImageView
             android:layout_width="@dimen/ic_delete"
@@ -44,10 +44,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/card_idea"
-    style="@style/AppTheme.Card.Margins"
     card_view:cardElevation="2dp"
     card_view:cardCornerRadius="5dp"
-    android:background="@android:color/white">
+    android:padding="50dp">
 
 
     <LinearLayout
