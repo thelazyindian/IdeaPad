@@ -14,6 +14,8 @@ public class Idea extends RealmObject {
 
     private String name; //Represents name of the project
 
+    private String desc; //Represents description of the project.
+
     public long getId() {
         return id;
     }
@@ -37,5 +39,9 @@ public class Idea extends RealmObject {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getDesc() { return desc; }
+
+    public void setDesc(String desc) { this.desc = desc; }
 
 }

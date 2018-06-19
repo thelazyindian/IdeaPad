@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
                 final EditText editName = content.findViewById(R.id.editName);
                 final EditText editTag = content.findViewById(R.id.editTag);
+                final EditText editDesc = content.findViewById(R.id.editDesc);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Mann mei ladoo phoota?")
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
                                     idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
                                     idea.setName(editName.getText().toString());
                                     idea.setTag(editTag.getText().toString());
+                                    idea.setDesc(editDesc.getText().toString());
 
                                     realm.copyToRealm(idea);
                                     realm.commitTransaction();
@@ -190,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
         dummyIdea1.setId(new Random().nextInt());
         dummyIdea1.setTag("App");
         dummyIdea1.setName("IdeaPad");
+        dummyIdea1.setDesc("xyz");
         ideaList.add(dummyIdea1);
 
         Idea dummyIdea2 = new Idea();
@@ -197,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
         dummyIdea2 = new Idea();
         dummyIdea2.setTag("Web");
         dummyIdea2.setName("NetControl");
+        dummyIdea1.setDesc("xyz");
         ideaList.add(dummyIdea2);
 
         Idea dummyIdea3 = new Idea();
@@ -204,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
         dummyIdea3 = new Idea();
         dummyIdea3.setTag("Dummy Idea");
         dummyIdea3.setName("Dumb");
+        dummyIdea1.setDesc("xyz");
         ideaList.add(dummyIdea3);
 
         for (Idea item : ideaList) {
@@ -233,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
             //to new object and pass the new object to restoreItem.
             final String deletedName = deletedIdea.getName();
             final String deletedTag = deletedIdea.getTag();
+            final String deletedDesc = deletedIdea.getDesc();
             final Long deletedId = deletedIdea.getId();
 
             Log.d(TAG, "onSwiped: " + "Adapter position before deletion " + deletedPosition);
@@ -258,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
                     newIdea.setId(deletedId);
                     newIdea.setTag(deletedTag);
                     newIdea.setName(deletedName);
+                    newIdea.setDesc(deletedDesc);
 
                     //Restore the deleted item.
                     recyclerViewAdapter.restoreItem(newIdea);

@@ -20,13 +20,13 @@
         android:hint="Name of the project"
         android:inputType="text" />
 
-    <!--<EditText-->
-        <!--android:id="@+id/editDesc"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="16dp"-->
-        <!--android:hint="What the project is all about"-->
-        <!--android:inputType="text" />-->
+    <EditText
+        android:id="@+id/editDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="What the project is all about"
+        android:inputType="text" />
 
 
 </LinearLayout>

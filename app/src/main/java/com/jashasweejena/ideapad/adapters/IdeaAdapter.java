@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,8 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
         ideaViewHolder.viewForeground.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                RealmController realmController = RealmController.with();
+                RealmResults<Idea> listOfIdeas = realmController.getAllBooks();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,9 +69,11 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
                 final EditText editName = content.findViewById(R.id.editName);
                 final EditText editTag = content.findViewById(R.id.editTag);
+                final EditText editDesc = content.findViewById(R.id.editDesc);
 
-                editName.setText(realm.where(Idea.class).findAll().get(position).getName());
-                editTag.setText(realm.where(Idea.class).findAll().get(position).getTag());
+                editName.setText(listOfIdeas.get(position).getName());
+                editTag.setText(listOfIdeas.get(position).getTag());
+                editDesc.setText(listOfIdeas.get(position).getDesc());
 
                 builder.setView(content)
                         .setTitle("Edit the idea")
@@ -84,8 +89,11 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
                                 String name;
                                 String tag;
+                                String desc;
+
                                 name = editName.getText().toString();
                                 tag = editTag.getText().toString();
+                                desc = editDesc.getText().toString();
 
                                 if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
                                     Toast.makeText(context.getApplicationContext(), "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();
@@ -94,6 +102,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
                                     idea.setName(name);
                                     idea.setTag(tag);
+                                    idea.setDesc(desc);
 
                                     realm.copyToRealm(idea);
 
@@ -118,6 +127,34 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                 dialog.show();
 
                 return false;
+
+            }
+        });
+
+        //If single clicked, show the description
+        ideaViewHolder.viewForeground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View showDesc = layoutInflater.inflate(R.layout.show_desc, null, false);
+
+                TextView description = showDesc.findViewById(R.id.description);
+                description.setGravity(Gravity.CENTER);
+
+                Idea idea = RealmController.with().getAllBooks().get(position);
+
+                String descriptionString = idea.getDesc();
+
+                description.setText(descriptionString);
+
+                builder.setView(showDesc)
+                        .setTitle("Description");
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
 
             }
         });
