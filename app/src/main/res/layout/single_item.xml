@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/framelayoutparent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/padd_10">
     
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/view_background"
-        android:background="@android:color/holo_red_dark">
+        android:background="@android:color/holo_red_dark"
+        android:layout_marginBottom="@dimen/padd_10">
 
         <ImageView
             android:layout_width="@dimen/ic_delete"
@@ -44,9 +46,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/card_idea"
-    card_view:cardElevation="2dp"
+    card_view:cardElevation="100dp"
     card_view:cardCornerRadius="5dp"
-    android:padding="50dp">
+    android:padding="50dp"
+    android:layout_marginBottom="@dimen/padd_10">
 
 
     <LinearLayout
