@@ -131,6 +131,27 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Pause the animation in case the app is closed and animation is still going on.
+        recyclerViewAdapter.typeWriterView.removeAnimation();
+
+        //Also, dismiss the Dialog showing the description
+        recyclerViewAdapter.descriptionDialog.dismiss();
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //Stop the animation in case the app is closed and animation is still going on.
+        recyclerViewAdapter.typeWriterView.removeAnimation();
+
+        //Also, dismiss the Dialog showing the description
+        recyclerViewAdapter.descriptionDialog.dismiss();
+    }
+
 
     //Helps to initialise RealmIdeaAdapter instance which in turn extends RealmModelAdapter
     // which extends RealmBase Adapter. Also, we are setting the RealmIdeaAdapter instance
@@ -170,12 +191,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
         Context context = recyclerView.getContext();
         LayoutAnimationController controller = null;
 
-        switch(type){
-            case 0 : //Fall down animation
+        switch (type) {
+            case 0: //Fall down animation
                 controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down);
         }
 
-        if(controller != null) {
+        if (controller != null) {
 
             recyclerView.setLayoutAnimation(controller);
             recyclerView.scheduleLayoutAnimation();

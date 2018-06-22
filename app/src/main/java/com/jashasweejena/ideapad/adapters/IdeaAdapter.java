@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.jashasweejena.ideapad.R;
 import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
 
+import in.codeshuffle.typewriterview.TypeWriterView;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -27,6 +27,8 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
     final Context context;
     private final String TAG = IdeaAdapter.class.getSimpleName();
+    public TypeWriterView typeWriterView = null;
+    public AlertDialog descriptionDialog = null;
     private Realm realm;
     private LayoutInflater inflater;
 
@@ -123,6 +125,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                             }
                         });
 
+
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
@@ -140,19 +143,22 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View showDesc = layoutInflater.inflate(R.layout.show_desc, null, false);
 
-                TextView description = showDesc.findViewById(R.id.description);
-                description.setGravity(Gravity.CENTER);
+                TypeWriterView description = showDesc.findViewById(R.id.description);
+                typeWriterView = description;
+
+                description.setDelay(100);
 
                 Idea idea = RealmController.with().getAllBooks().get(position);
 
                 String descriptionString = idea.getDesc();
 
-                description.setText(descriptionString);
+                description.animateText(descriptionString);
 
                 builder.setView(showDesc)
                         .setTitle("Description");
 
                 AlertDialog alertDialog = builder.create();
+                descriptionDialog = alertDialog;
                 alertDialog.show();
 
 
