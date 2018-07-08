@@ -32,16 +32,18 @@ import com.jashasweejena.ideapad.realm.RealmController;
 import java.util.ArrayList;
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity implements RecyclerTouchItemHelper.RecyclerTouchListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
-    private FloatingActionButton fab;
-    private RecyclerView recyclerView;
-    private CoordinatorLayout coordinatorLayout;
-    private Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.recycler) RecyclerView recyclerView;
+    @BindView(R.id.coordinatorlayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     private IdeaAdapter recyclerViewAdapter;
     private Realm realm;
     private LayoutInflater layoutInflater;
@@ -53,16 +55,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        coordinatorLayout = findViewById(R.id.coordinatorlayout);
+        ButterKnife.bind(this);
 
-        toolbar = findViewById(R.id.toolbar);
+        coordinatorLayout = findViewById(R.id.coordinatorlayout);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         realm = RealmController.with().getRealm();
-
-        coordinatorLayout = findViewById(R.id.coordinatorlayout);
-        recyclerView = findViewById(R.id.recycler);
 
         setUpRecycler();
 
@@ -70,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
         setRealmAdapter(listOfIdeas);
 
-        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
