@@ -1,5 +1,6 @@
 package com.jashasweejena.ideapad.activity;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -16,11 +17,13 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.colorbox.ColorBox;
 import com.jashasweejena.ideapad.R;
 import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.adapters.RealmIdeaAdapter;
@@ -122,32 +125,55 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
                             }
                         });
 
+
+
+
                 AlertDialog dialog = builder.create();
+                // get the center for the clipping circle
+
+               final View view = dialog.getWindow().getDecorView();
+
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        final int centerX = view.getWidth() / 2;
+                        final int centerY = view.getHeight() / 2;
+                        // TODO Get startRadius from FAB
+                        // TODO Also translate animate FAB to center of screen?
+                        float startRadius = 20;
+                        float endRadius = view.getHeight();
+                        Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
+                        animator.setDuration(500);
+                        animator.start();                    }
+                });
+
                 dialog.show();
 
             }
         });
+
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //Pause the animation in case the app is closed and animation is still going on.
-        recyclerViewAdapter.typeWriterView.removeAnimation();
-
-        //Also, dismiss the Dialog showing the description
-        recyclerViewAdapter.descriptionDialog.dismiss();
+//        //Pause the animation in case the app is closed and animation is still going on.
+//        recyclerViewAdapter.typeWriterView.removeAnimation();
+//
+//        //Also, dismiss the Dialog showing the description
+//        recyclerViewAdapter.descriptionDialog.dismiss();
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
-        //Stop the animation in case the app is closed and animation is still going on.
-        recyclerViewAdapter.typeWriterView.removeAnimation();
-
-        //Also, dismiss the Dialog showing the description
-        recyclerViewAdapter.descriptionDialog.dismiss();
+//        //Stop the animation in case the app is closed and animation is still going on.
+//        recyclerViewAdapter.typeWriterView.removeAnimation();
+//
+//        //Also, dismiss the Dialog showing the description
+//        recyclerViewAdapter.descriptionDialog.dismiss();
     }
 
 
