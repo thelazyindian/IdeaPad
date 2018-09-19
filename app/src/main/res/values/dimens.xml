@@ -12,7 +12,7 @@
     <dimen name="margin_small">0dp</dimen>
     <dimen name="text_size_normal">13sp</dimen>
     <dimen name="imge_book_detail">80dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_margin">30dp</dimen>
 
     <integer name="animation_duration">1000</integer>
 </resources>
