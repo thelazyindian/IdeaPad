@@ -24,12 +24,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.afollestad.appthemeengine.ATEActivity;
-import com.github.colorbox.ColorBox;
 import com.jashasweejena.ideapad.R;
 import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.adapters.RealmIdeaAdapter;
 import com.jashasweejena.ideapad.app.Prefs;
-import com.jashasweejena.ideapad.app.RecyclerTouchItemHelper;
 import com.jashasweejena.ideapad.helpers.DeletionSwipeHelper;
 import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
@@ -274,12 +272,6 @@ public class MainActivity extends ATEActivity implements DeletionSwipeHelper.OnS
         }
 
     }
-
-//    @Override
-//    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, final int deletedPosition) {
-//
-//
-//    }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int deletedPosition) {

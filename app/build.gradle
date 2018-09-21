@@ -46,6 +46,7 @@ dependencies {
     //ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
 
+    implementation project(':app-theme-engine')
     implementation 'com.github.enricocid:cbl:1.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'

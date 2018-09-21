@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +56,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
         //cast the generic ViewHolder to a specific one
         final IdeaViewHolder ideaViewHolder = (IdeaViewHolder) holder;
 
-        ideaViewHolder.tag.setText(idea.getTag());
+//        ideaViewHolder.tag.setText(idea.getTag());
         ideaViewHolder.name.setText(idea.getName());
 
         //If long pressed, launch the edit dialog
@@ -203,7 +204,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
         public CardView viewForeground;
 //        public RelativeLayout viewBackground;
-        private TextView tag;
+        private ImageView tag;
         private TextView name;
 
 

@@ -30,6 +30,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end" />
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/padd_10"
+        android:layout_marginBottom="@dimen/padd_10"
+        app:fabElevation="@dimen/padd_10"
+        android:src="@drawable/ic_stars_black_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
     <resources>
-    <color name="colorPrimary">#74b9ff</color>
-    <color name="colorPrimaryDark">#0984e3</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#ecf0f1</color>
+    <color name="colorPrimaryDark">#bdc3c7</color>
+    <color name="colorAccent">#c51162</color>
     <color name="bg_row_background">#fa315b</color>
     <color name="item_name">#535353</color>
     <color name="description">#a9a9a9</color>
@@ -35,8 +35,8 @@
     <color name="semi_black">#87000000</color>
     <color name="grey">#FF828282</color>
 
-    <color name="wuteva">#4b7bec</color>
-    <color name="masterbg">#d1d8e0</color>
+    <color name="wuteva">#286bd6</color>
+    <color name="masterbg">#f9f9f9</color>
 
 </resources>
 

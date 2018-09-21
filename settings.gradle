@@ -1,0 +1,3 @@
+include ':app'
+include ':app-theme-engine'
+project(':app-theme-engine').projectDir = new File('/Users/jashasweejena/app-theme-engine/library')
