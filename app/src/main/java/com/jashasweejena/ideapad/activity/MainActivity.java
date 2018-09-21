@@ -23,12 +23,14 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.appthemeengine.ATEActivity;
 import com.github.colorbox.ColorBox;
 import com.jashasweejena.ideapad.R;
 import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.adapters.RealmIdeaAdapter;
 import com.jashasweejena.ideapad.app.Prefs;
 import com.jashasweejena.ideapad.app.RecyclerTouchItemHelper;
+import com.jashasweejena.ideapad.helpers.DeletionSwipeHelper;
 import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
 
@@ -40,7 +42,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends AppCompatActivity implements RecyclerTouchItemHelper.RecyclerTouchListener {
+public class MainActivity extends ATEActivity implements DeletionSwipeHelper.OnSwipeListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.fab) FloatingActionButton fab;
@@ -194,8 +196,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
 
         //Assign ItemTouchHelper to RecyclerView.
-        ItemTouchHelper.SimpleCallback itemTouchHelper = new RecyclerTouchItemHelper(0, ItemTouchHelper.LEFT, this);
-        new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView);
+//        ItemTouchHelper.SimpleCallback itemTouchHelper = new RecyclerTouchItemHelper(0, ItemTouchHelper.LEFT, this);
+//        new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView);
+
+        ItemTouchHelper.Callback callback = new DeletionSwipeHelper(0, ItemTouchHelper.START, this, this);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         //Set up Vertical LinearLayoutManager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -269,9 +275,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
     }
 
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, final int deletedPosition) {
+//    @Override
+//    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, final int deletedPosition) {
+//
+//
+//    }
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int deletedPosition) {
         if (viewHolder instanceof IdeaAdapter.IdeaViewHolder) {
 
             //Store the object to be हलाल so that you can resurrect it back, if you want.

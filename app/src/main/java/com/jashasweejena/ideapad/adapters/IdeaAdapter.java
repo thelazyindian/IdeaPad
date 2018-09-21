@@ -202,7 +202,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
     public class IdeaViewHolder extends RecyclerView.ViewHolder {
 
         public CardView viewForeground;
-        public RelativeLayout viewBackground;
+//        public RelativeLayout viewBackground;
         private TextView tag;
         private TextView name;
 
@@ -216,7 +216,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
             name = itemView.findViewById(R.id.name);
 
-            viewBackground = itemView.findViewById(R.id.view_background);
+//            viewBackground = itemView.findViewById(R.id.view_background);
         }
     }
 }
