@@ -28,6 +28,7 @@ import com.jashasweejena.ideapad.R;
 import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.adapters.RealmIdeaAdapter;
 import com.jashasweejena.ideapad.app.Prefs;
+import com.jashasweejena.ideapad.app.RecyclerTouchItemHelper;
 import com.jashasweejena.ideapad.helpers.DeletionSwipeHelper;
 import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
@@ -40,13 +41,17 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends ATEActivity implements DeletionSwipeHelper.OnSwipeListener {
+public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper.RecyclerTouchListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
-    @BindView(R.id.fab) FloatingActionButton fab;
-    @BindView(R.id.recycler) RecyclerView recyclerView;
-    @BindView(R.id.coordinatorlayout) CoordinatorLayout coordinatorLayout;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.recycler)
+    RecyclerView recyclerView;
+    @BindView(R.id.coordinatorlayout)
+    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     private IdeaAdapter recyclerViewAdapter;
     private Realm realm;
     private LayoutInflater layoutInflater;
@@ -126,12 +131,10 @@ public class MainActivity extends ATEActivity implements DeletionSwipeHelper.OnS
                         });
 
 
-
-
                 AlertDialog dialog = builder.create();
                 // get the center for the clipping circle
 
-               final View view = dialog.getWindow().getDecorView();
+                final View view = dialog.getWindow().getDecorView();
 
                 view.post(new Runnable() {
                     @Override
@@ -144,7 +147,8 @@ public class MainActivity extends ATEActivity implements DeletionSwipeHelper.OnS
                         float endRadius = view.getHeight();
                         Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
                         animator.setDuration(500);
-                        animator.start();                    }
+                        animator.start();
+                    }
                 });
 
                 dialog.show();
@@ -194,12 +198,12 @@ public class MainActivity extends ATEActivity implements DeletionSwipeHelper.OnS
 
 
         //Assign ItemTouchHelper to RecyclerView.
-//        ItemTouchHelper.SimpleCallback itemTouchHelper = new RecyclerTouchItemHelper(0, ItemTouchHelper.LEFT, this);
-//        new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView);
+        ItemTouchHelper.SimpleCallback itemTouchHelper = new RecyclerTouchItemHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView);
 
-        ItemTouchHelper.Callback callback = new DeletionSwipeHelper(0, ItemTouchHelper.START, this, this);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+//        ItemTouchHelper.Callback callback = new DeletionSwipeHelper(0, ItemTouchHelper.START, this, this);
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         //Set up Vertical LinearLayoutManager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -274,7 +278,7 @@ public class MainActivity extends ATEActivity implements DeletionSwipeHelper.OnS
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int deletedPosition) {
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int deletedPosition) {
         if (viewHolder instanceof IdeaAdapter.IdeaViewHolder) {
 
             //Store the object to be हलाल so that you can resurrect it back, if you want.

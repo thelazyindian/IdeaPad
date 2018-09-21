@@ -17,5 +17,8 @@
     <dimen name="padding_normal">15dp</dimen>
     <dimen name="padding_small">8dp</dimen>
 
+    <dimen name="radius">10dp</dimen>
+
+
     <integer name="animation_duration">1000</integer>
 </resources>

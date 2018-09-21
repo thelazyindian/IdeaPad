@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             app:contentScrim="?android:attr/colorPrimary"
-            app:layout_scrollFlags="enterAlways" />
+            app:layout_scrollFlags="enterAlways"
+            android:theme="@style/ToolbarTheme"/>
 
     </android.support.design.widget.AppBarLayout>
 
