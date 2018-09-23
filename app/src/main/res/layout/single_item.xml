@@ -48,10 +48,10 @@
             android:id="@+id/card_idea"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="200dp"
             cardview:cardBackgroundColor="@color/wuteva"
             cardview:cardCornerRadius="@dimen/radius"
-            cardview:cardElevation="20dp"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:cardElevation="200dp"
             cardview:contentPadding="@dimen/padd_10">
 
 

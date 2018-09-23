@@ -35,6 +35,6 @@
         android:layout_marginRight="@dimen/padd_10"
         android:layout_marginBottom="@dimen/padd_10"
         app:fabElevation="@dimen/padd_10"
-        android:src="@drawable/ic_stars_black_24dp"/>
+        android:src="@drawable/ic_create_black_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -29,7 +29,6 @@ import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.adapters.RealmIdeaAdapter;
 import com.jashasweejena.ideapad.app.Prefs;
 import com.jashasweejena.ideapad.app.RecyclerTouchItemHelper;
-import com.jashasweejena.ideapad.helpers.DeletionSwipeHelper;
 import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
 
