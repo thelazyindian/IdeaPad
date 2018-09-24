@@ -3,6 +3,7 @@ package com.jashasweejena.ideapad.activity;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -24,6 +25,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.afollestad.appthemeengine.ATEActivity;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.jashasweejena.ideapad.R;
 import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.adapters.RealmIdeaAdapter;
@@ -33,6 +38,8 @@ import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -55,6 +62,8 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
     private Realm realm;
     private LayoutInflater layoutInflater;
     private RealmResults<Idea> listOfIdeas;
+    private static int RC_SIGN_IN = 123;
+
 
 
     @Override
@@ -75,6 +84,8 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
         listOfIdeas = RealmController.getInstance().getAllBooks();
 
         setRealmAdapter(listOfIdeas);
+
+        firebaseStart();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,6 +336,44 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
 
+        }
+
+
+    }
+    private void firebaseStart(){
+
+
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+
+// Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                // ...
+            } else {
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
+            }
         }
     }
 }
