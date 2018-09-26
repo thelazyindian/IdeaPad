@@ -25,10 +25,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.afollestad.appthemeengine.ATEActivity;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+//import com.firebase.ui.auth.AuthUI;
+//import com.firebase.ui.auth.IdpResponse;
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseUser;
 import com.jashasweejena.ideapad.R;
 import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.adapters.RealmIdeaAdapter;
@@ -85,7 +85,7 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 
         setRealmAdapter(listOfIdeas);
 
-        firebaseStart();
+//        firebaseStart();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,21 +112,22 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 
 
                                 if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
-                                    Toast.makeText(MainActivity.this, "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();
-                                } else {
+                                    Toast.makeText(MainActivity.this, "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();}
 
-                                    realm.beginTransaction();
-
-                                    Idea idea = new Idea();
-                                    idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
-                                    idea.setName(editName.getText().toString());
-                                    idea.setTag(editTag.getText().toString());
-                                    idea.setDesc(editDesc.getText().toString());
-
-                                    realm.copyToRealm(idea);
-                                    realm.commitTransaction();
-
-                                }
+//                                } else {
+//
+//                                    realm.beginTransaction();
+//
+//                                    Idea idea = new Idea();
+//                                    idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
+//                                    idea.setName(editName.getText().toString());
+//                                    idea.setTag(editTag.getText().toString());
+//                                    idea.setDesc(editDesc.getText().toString());
+//
+//                                    realm.copyToRealm(idea);
+//                                    realm.commitTransaction();
+//
+//                                }
 
 
                             }
@@ -340,40 +341,44 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 
 
     }
-    private void firebaseStart(){
-
-
-        // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.GoogleBuilder().build());
-
-// Create and launch sign-in intent
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                RC_SIGN_IN);
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
-        }
-    }
+//    private void firebaseStart(){
+//
+//
+//        // Choose authentication providers
+//        List<AuthUI.IdpConfig> providers = Arrays.asList(
+//                new AuthUI.IdpConfig.GoogleBuilder().build());
+//
+//// Create and launch sign-in intent
+//        startActivityForResult(
+//                AuthUI.getInstance()
+//                        .createSignInIntentBuilder()
+//                        .setAvailableProviders(providers)
+//                        .build(),
+//                RC_SIGN_IN);
+//
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == RC_SIGN_IN) {
+//            IdpResponse response = IdpResponse.fromResultIntent(data);
+//            Log.d(TAG, "onActivityResult: " + response.getEmail());
+//
+//            if (resultCode == RESULT_OK) {
+//                // Successfully signed in
+//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                Log.d(TAG, "onActivityResult: " + user.getEmail());
+//                // ...
+//            } else {
+//                // Sign in failed. If response is null the user canceled the
+//                // sign-in flow using the back button. Otherwise check
+//                // response.getError().getErrorCode() and handle the error.
+//                // ...
+//                Log.d(TAG, "onActivityResult: " + "Login failed!!!!!!!!!fa");
+//
+//            }
+//        }
+//    }
 }
