@@ -116,16 +116,16 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 
 //                                } else {
 //
-//                                    realm.beginTransaction();
-//
-//                                    Idea idea = new Idea();
-//                                    idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
-//                                    idea.setName(editName.getText().toString());
-//                                    idea.setTag(editTag.getText().toString());
-//                                    idea.setDesc(editDesc.getText().toString());
-//
-//                                    realm.copyToRealm(idea);
-//                                    realm.commitTransaction();
+                                    realm.beginTransaction();
+
+                                    Idea idea = new Idea();
+                                    idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
+                                    idea.setName(editName.getText().toString());
+                                    idea.setTag(editTag.getText().toString());
+                                    idea.setDesc(editDesc.getText().toString());
+
+                                    realm.copyToRealm(idea);
+                                    realm.commitTransaction();
 //
 //                                }
 
