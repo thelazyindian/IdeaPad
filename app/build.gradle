@@ -53,6 +53,17 @@ dependencies {
     //ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
 
+    //Canvas
+    implementation 'com.rm:freedrawview:1.1.2'
+
+    implementation 'com.github.ajithvgiri:Canvas-Library:v1.1.1'
+
+    def htextview_version = "0.1.6"
+// as 3.0 use implementation
+    implementation "com.hanks:htextview-base:$htextview_version"        // base library
+    implementation "com.hanks:htextview-fall:$htextview_version"        // optional
+    implementation "com.hanks:htextview-fade:$htextview_version"        // optional
+
 
     implementation project(':app-theme-engine')
     implementation 'com.github.enricocid:cbl:1.1.1'

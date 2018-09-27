@@ -4,8 +4,10 @@ import android.animation.Animator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,7 +23,10 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.afollestad.appthemeengine.ATEActivity;
@@ -29,6 +34,7 @@ import com.afollestad.appthemeengine.ATEActivity;
 //import com.firebase.ui.auth.IdpResponse;
 //import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.FirebaseUser;
+import com.ajithvgiri.canvaslibrary.CanvasView;
 import com.jashasweejena.ideapad.R;
 import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.adapters.RealmIdeaAdapter;
@@ -36,6 +42,10 @@ import com.jashasweejena.ideapad.app.Prefs;
 import com.jashasweejena.ideapad.app.RecyclerTouchItemHelper;
 import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
+import com.rm.freedrawview.FreeDrawView;
+import com.rm.freedrawview.PathDrawnListener;
+import com.rm.freedrawview.PathRedoUndoCountChangeListener;
+import com.rm.freedrawview.ResizeBehaviour;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,8 +72,11 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
     private Realm realm;
     private LayoutInflater layoutInflater;
     private RealmResults<Idea> listOfIdeas;
+    FreeDrawView mSignatureView;
     private static int RC_SIGN_IN = 123;
+    Button tempButton;
 
+    byte[] bmp;
 
 
     @Override
@@ -73,6 +86,7 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 
         ButterKnife.bind(this);
 
+
         coordinatorLayout = findViewById(R.id.coordinatorlayout);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,89 +95,47 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 
         setUpRecycler();
 
+        layoutInflater = this.getLayoutInflater();
+        final View content = layoutInflater.inflate(R.layout.canvas, null, false);
+
+        mSignatureView = content.findViewById(R.id.drawingxyz);
+        tempButton = findViewById(R.id.tempButton);
+
+//        final View content2 = layoutInflater.inflate(R.layout.canvas2, null, false);
+//        CanvasView cv = new CanvasView(this);
+//        RelativeLayout parentView = content2.findViewById(R.id.parentView);
+//        parentView.addView(cv);
+
         listOfIdeas = RealmController.getInstance().getAllBooks();
 
         setRealmAdapter(listOfIdeas);
 
 //        firebaseStart();
 
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                layoutInflater = MainActivity.this.getLayoutInflater();
-                final View content = layoutInflater.inflate(R.layout.edit_idea, null, false);
+                fabFunction();
+            }
+        });
 
-                final EditText editName = content.findViewById(R.id.editName);
-                final EditText editTag = content.findViewById(R.id.editTag);
-                final EditText editDesc = content.findViewById(R.id.editDesc);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Mann mei ladoo phoota?")
-                        .setView(content)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+        tempButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                drawView();
+                Intent intent = new Intent(MainActivity.this, CanvasActivity.class);
+                startActivity(intent);
 
 
-                                //Create a new Idea instance which will store information
-                                //regarding the idea in respective fields and go into
-                                //the realm database
+            }
+        });
 
-
-                                if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
-                                    Toast.makeText(MainActivity.this, "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();}
-
-//                                } else {
-//
-                                    realm.beginTransaction();
-
-                                    Idea idea = new Idea();
-                                    idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
-                                    idea.setName(editName.getText().toString());
-                                    idea.setTag(editTag.getText().toString());
-                                    idea.setDesc(editDesc.getText().toString());
-
-                                    realm.copyToRealm(idea);
-                                    realm.commitTransaction();
-//
-//                                }
-
-
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                dialog.dismiss();
-
-                            }
-                        });
-
-
-                AlertDialog dialog = builder.create();
-                // get the center for the clipping circle
-
-                final View view = dialog.getWindow().getDecorView();
-
-                view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        final int centerX = view.getWidth() / 2;
-                        final int centerY = view.getHeight() / 2;
-                        // TODO Get startRadius from FAB
-                        // TODO Also translate animate FAB to center of screen?
-                        float startRadius = 20;
-                        float endRadius = view.getHeight();
-                        Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
-                        animator.setDuration(500);
-                        animator.start();
-                    }
-                });
-
-                dialog.show();
-
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabFunction();
             }
         });
 
@@ -381,4 +353,151 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 //            }
 //        }
 //    }
+
+   private void drawView(){
+
+
+       mSignatureView.setPaintColor(Color.BLACK);
+       mSignatureView.setPaintWidthPx(getResources().getDimensionPixelSize(R.dimen.paint_width));
+       //mSignatureView.setPaintWidthPx(12);
+       mSignatureView.setPaintWidthDp(getResources().getDimension(R.dimen.paint_dpi));
+       //mSignatureView.setPaintWidthDp(6);
+       mSignatureView.setPaintAlpha(255);// from 0 to 255
+       mSignatureView.setResizeBehaviour(ResizeBehaviour.CROP);// Must be one of ResizeBehaviour
+       // values;
+       mSignatureView.setPathRedoUndoCountChangeListener(new PathRedoUndoCountChangeListener() {
+           @Override
+           public void onUndoCountChanged(int undoCount) {
+               // The undoCount is the number of the paths that can be undone
+           }
+
+           @Override
+           public void onRedoCountChanged(int redoCount) {
+               // The redoCount is the number of path removed that can be redrawn
+           }
+       });
+
+       // This listener will be notified every time a new path has been drawn
+       mSignatureView.setOnPathDrawnListener(new PathDrawnListener() {
+           @Override
+           public void onNewPathDrawn() {
+               // The user has finished drawing a path
+           }
+
+           @Override
+           public void onPathStart() {
+               // The user has started drawing a path
+           }
+       });
+
+       mSignatureView.getDrawScreenshot(new FreeDrawView.DrawCreatorListener() {
+           @Override
+           public void onDrawCreated(Bitmap draw) {
+               // The draw Bitmap is the drawn content of the View
+           }
+
+           @Override
+           public void onDrawCreationError() {
+               // Something went wrong creating the bitmap, should never
+               // happen unless the async task has been canceled
+           }
+       });
+   }
+
+   private void fabFunction(){
+
+       layoutInflater = MainActivity.this.getLayoutInflater();
+       final View content = layoutInflater.inflate(R.layout.edit_idea, null, false);
+
+       final EditText editName = content.findViewById(R.id.editName);
+       final EditText editTag = content.findViewById(R.id.editTag);
+       final EditText editDesc = content.findViewById(R.id.editDesc);
+       final ImageView image = content.findViewById(R.id.drawingImageView);
+
+       AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+       builder.setTitle("Mann mei ladoo phoota?")
+               .setView(content)
+               .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+
+
+                       //Create a new Idea instance which will store information
+                       //regarding the idea in respective fields and go into
+                       //the realm database
+
+
+
+                           if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
+                               Toast.makeText(MainActivity.this, "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();
+                           }
+
+//                                } else {
+//
+                           realm.beginTransaction();
+
+                           Idea idea = new Idea();
+                           idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
+                           idea.setName(editName.getText().toString());
+                           idea.setTag(editTag.getText().toString());
+                           idea.setDesc(editDesc.getText().toString());
+
+                           realm.copyToRealm(idea);
+                           realm.commitTransaction();
+//
+//                                }
+
+
+
+
+
+//                           Log.d(TAG, "onClick: " + "bitmap not null");
+//
+//                           Idea idea = new Idea();
+//                           idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
+//                           idea.setDrawing(bmp);
+
+
+                   }
+               })
+               .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+
+                       dialog.dismiss();
+
+                   }
+               });
+
+
+       AlertDialog dialog = builder.create();
+       // get the center for the clipping circle
+
+       final View view = dialog.getWindow().getDecorView();
+
+       view.post(new Runnable() {
+           @Override
+           public void run() {
+               final int centerX = view.getWidth() / 2;
+               final int centerY = view.getHeight() / 2;
+               // TODO Get startRadius from FAB
+               // TODO Also translate animate FAB to center of screen?
+               float startRadius = 20;
+               float endRadius = view.getHeight();
+               Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
+               animator.setDuration(500);
+               animator.start();
+           }
+       });
+
+       dialog.show();
+   }
+
+   public void setByteArray(byte[] bmp){
+        if(bmp != null){
+            Log.d(TAG, "setByteArray: " + "not null bmp");
+        }
+        this.bmp = bmp;
+   }
+
 }

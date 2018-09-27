@@ -1,6 +1,9 @@
 package com.jashasweejena.ideapad.model;
 
+import android.graphics.Bitmap;
 import android.media.Image;
+
+import com.rm.freedrawview.FreeDrawSerializableState;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -15,6 +18,31 @@ public class Idea extends RealmObject {
     private String name; //Represents name of the project
 
     private String desc; //Represents description of the project.
+
+
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    private String kind;
+
+    public byte[] getDrawing() {
+        return drawing;
+    }
+
+    public void setDrawing(byte[] drawing) {
+        this.drawing = drawing;
+    }
+
+    private byte[] drawing;
+
+
+//    private FreeDrawSerializableState drawing;
 
     public long getId() {
         return id;

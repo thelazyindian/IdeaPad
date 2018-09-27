@@ -19,6 +19,9 @@
 
     <dimen name="radius">10dp</dimen>
 
+    <dimen name="paint_width">12dp</dimen>
+    <dimen name="paint_dpi">6dp</dimen>
+
 
     <integer name="animation_duration">1000</integer>
 </resources>
