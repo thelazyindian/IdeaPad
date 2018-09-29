@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.ajithvgiri.canvaslibrary.CanvasView;
 import com.jashasweejena.ideapad.R;
+import com.jashasweejena.ideapad.adapters.IdeaAdapter;
 import com.jashasweejena.ideapad.model.Idea;
 import com.jashasweejena.ideapad.realm.RealmController;
 
@@ -30,8 +31,8 @@ public class CanvasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         parentView = findViewById(R.id.parentView);
         CanvasView canvasView = new CanvasView(this);
@@ -53,22 +54,6 @@ public class CanvasActivity extends AppCompatActivity {
 
         Bitmap bitmap = parentView.getDrawingCache();
 
-//        final File Path = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Canvas");
-//        Path.mkdirs();
-//        String fileName = "Canvas-" + System.currentTimeMillis() + ".jpg";
-//        File saveFile = new File(Path, fileName);
-//        FileOutputStream FOS = null;
-//        try {
-//            FOS = new FileOutputStream(saveFile);
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, FOS);
-//            FOS.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
         byte[] byteArray = convertBitmapToByteArray(bitmap);
 
         Realm realm = RealmController.getInstance().getRealm();
@@ -79,6 +64,8 @@ public class CanvasActivity extends AppCompatActivity {
         idea.setDrawing(byteArray);
         realm.copyToRealm(idea);
         realm.commitTransaction();
+//        new IdeaAdapter(this).restoreItem(idea);
+        super.onBackPressed();
 
 
     }

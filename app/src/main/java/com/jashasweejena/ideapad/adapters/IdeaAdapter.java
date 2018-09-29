@@ -89,13 +89,13 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View showDesc = layoutInflater.inflate(R.layout.show_desc, null, false);
 
-                HTextView description = showDesc.findViewById(R.id.description);
-//                TypeWriterView description = showDesc.findViewById(R.id.description);
+//                HTextView description = showDesc.findViewById(R.id.description);
+                TypeWriterView description = showDesc.findViewById(R.id.description);
 //                typeWriterView = description;
 
                 ImageView imageView = showDesc.findViewById(R.id.drawingImageView);
 
-//                description.setDelay(100);
+                description.setDelay(100);
 
                 Idea idea = RealmController.with().getAllBooks().get(position);
 
@@ -251,5 +251,20 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
         AlertDialog dialog = builder.create();
         dialog.show();
 
+    }
+
+    public void callNotifyDatasetChanged(){
+
+        Realm r = RealmController.getInstance().getRealm();
+
+        r.beginTransaction();
+
+        Idea idea = new Idea();
+        idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
+
+        r.copyToRealm(idea);
+        r.commitTransaction();
+
+        notifyDataSetChanged();
     }
 }
