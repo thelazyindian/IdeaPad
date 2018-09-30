@@ -15,7 +15,6 @@ import com.jashasweejena.ideapad.R;
 
 public class EditTextDialogFragment extends DialogFragment implements TextView.OnEditorActionListener {
     EditText editName;
-    EditText editTag;
     EditText editDesc;
 
     public EditTextDialogFragment() {
@@ -41,13 +40,11 @@ public class EditTextDialogFragment extends DialogFragment implements TextView.O
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         editName = view.findViewById(R.id.editName);
-        editTag = view.findViewById(R.id.editTag);
         editDesc = view.findViewById(R.id.editDesc);
 
         getDialog().setTitle(getArguments().getString("title"));
 
         editName.setOnEditorActionListener(this);
-        editTag.setOnEditorActionListener(this);
         editDesc.setOnEditorActionListener(this);
 
     }
@@ -56,14 +53,12 @@ public class EditTextDialogFragment extends DialogFragment implements TextView.O
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
         String name;
-        String tag;
         String desc;
 
         if (EditorInfo.IME_ACTION_DONE == actionId) {
 
             EditNameDialogListener listener = (EditNameDialogListener) getActivity();
             listener.onFinishEditDialog(editName.getText().toString(),
-                    editTag.getText().toString(),
                     editDesc.getText().toString());
             return true;
 
@@ -73,6 +68,6 @@ public class EditTextDialogFragment extends DialogFragment implements TextView.O
 
 
     public interface EditNameDialogListener {
-        void onFinishEditDialog(String editName, String editTag, String editDesc);
+        void onFinishEditDialog(String editName, String editDesc);
     }
 }

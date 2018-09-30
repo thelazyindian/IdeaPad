@@ -60,7 +60,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper.RecyclerTouchListener {
+public class MainActivity extends AppCompatActivity implements RecyclerTouchItemHelper.RecyclerTouchListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.fab)
@@ -218,7 +218,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 
         Idea dummyIdea1 = new Idea();
         dummyIdea1.setId(new Random().nextInt());
-        dummyIdea1.setTag("App");
         dummyIdea1.setName("IdeaPad");
         dummyIdea1.setDesc("xyz");
         ideaList.add(dummyIdea1);
@@ -226,7 +225,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
         Idea dummyIdea2 = new Idea();
         dummyIdea2.setId(new Random().nextInt());
         dummyIdea2 = new Idea();
-        dummyIdea2.setTag("Web");
         dummyIdea2.setName("NetControl");
         dummyIdea1.setDesc("xyz");
         ideaList.add(dummyIdea2);
@@ -234,7 +232,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
         Idea dummyIdea3 = new Idea();
         dummyIdea3.setId(new Random().nextInt());
         dummyIdea3 = new Idea();
-        dummyIdea3.setTag("Dummy Idea");
         dummyIdea3.setName("Dumb");
         dummyIdea1.setDesc("xyz");
         ideaList.add(dummyIdea3);
@@ -264,7 +261,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
             //create a new Realm object and set these fields
             //to new object and pass the new object to restoreItem.
             final String deletedName = deletedIdea.getName();
-            final String deletedTag = deletedIdea.getTag();
             final String deletedDesc = deletedIdea.getDesc();
             final Long deletedId = deletedIdea.getId();
 
@@ -289,7 +285,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
                     //Create new Idea object with fields of old object and use it instead.
                     Idea newIdea = new Idea();
                     newIdea.setId(deletedId);
-                    newIdea.setTag(deletedTag);
                     newIdea.setName(deletedName);
                     newIdea.setDesc(deletedDesc);
 
@@ -402,7 +397,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
         final View content = layoutInflater.inflate(R.layout.edit_idea, null, false);
 
         final EditText editName = content.findViewById(R.id.editName);
-        final EditText editTag = content.findViewById(R.id.editTag);
         final EditText editDesc = content.findViewById(R.id.editDesc);
         final ImageView image = content.findViewById(R.id.drawingImageView);
 
@@ -428,10 +422,9 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
                                 Toast.makeText(MainActivity.this, "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();
                             }
                             String name = editName.getText().toString();
-                            String tag = editTag.getText().toString();
                             String desc = editDesc.getText().toString();
 
-                            addIdeaToRealm(name, tag, desc);
+                            addIdeaToRealm(name, desc);
                         }
 
                         else{
@@ -441,9 +434,7 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
                             }
 
                             String name = editName.getText().toString();
-                            String tag = editTag.getText().toString();
-
-                            addIdeaToRealm(name, tag, desc);
+                            addIdeaToRealm(name, desc);
                         }
                     }
                 })
@@ -529,13 +520,12 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
         }
     }
 
-    private void addIdeaToRealm(String name, String tag, String desc){
+    private void addIdeaToRealm(String name, String desc){
         realm.beginTransaction();
 
         Idea idea = new Idea();
         idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
         idea.setName(name);
-        idea.setTag(tag);
         idea.setDesc(desc);
 
         realm.copyToRealm(idea);

@@ -165,7 +165,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
         public CardView viewForeground;
 //        public RelativeLayout viewBackground;
-        private ImageView tag;
         private TextView name;
 
 
@@ -173,8 +172,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
             super(itemView);
 
             viewForeground = itemView.findViewById(R.id.card_idea);
-
-            tag = itemView.findViewById(R.id.tag);
 
             name = itemView.findViewById(R.id.name);
 
@@ -191,11 +188,9 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
         final View content = layoutInflater.inflate(R.layout.edit_idea, null, false);
 
         final EditText editName = content.findViewById(R.id.editName);
-        final EditText editTag = content.findViewById(R.id.editTag);
         final EditText editDesc = content.findViewById(R.id.editDesc);
 
         editName.setText(listOfIdeas.get(position).getName());
-        editTag.setText(listOfIdeas.get(position).getTag());
         editDesc.setText(listOfIdeas.get(position).getDesc());
 
         builder.setView(content)
@@ -216,7 +211,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
 
                         name = editName.getText().toString();
-                        tag = editTag.getText().toString();
                         desc = editDesc.getText().toString();
 
                         if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
@@ -225,7 +219,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                         } else {
 
                             idea.setName(name);
-                            idea.setTag(tag);
                             idea.setDesc(desc);
 
                             realm.copyToRealm(idea);
