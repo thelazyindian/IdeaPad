@@ -30,8 +30,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.afollestad.appthemeengine.ATEActivity;
 //import com.firebase.ui.auth.AuthUI;
 //import com.firebase.ui.auth.IdpResponse;
 //import com.google.firebase.auth.FirebaseAuth;
@@ -535,5 +533,3 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
 
 }
-
-

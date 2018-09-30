@@ -31,15 +31,14 @@ public class CanvasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         parentView = findViewById(R.id.parentView);
         CanvasView canvasView = new CanvasView(this);
         parentView.addView(canvasView);
 
         parentView.setDrawingCacheEnabled(true);
-
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +65,6 @@ public class CanvasActivity extends AppCompatActivity {
         realm.commitTransaction();
 //        new IdeaAdapter(this).restoreItem(idea);
         super.onBackPressed();
-
 
     }
 

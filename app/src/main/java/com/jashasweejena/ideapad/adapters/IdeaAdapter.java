@@ -34,7 +34,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
 
     final Context context;
     private final String TAG = IdeaAdapter.class.getSimpleName();
-//    public TypeWriterView typeWriterView = null;
     public AlertDialog descriptionDialog = null;
     private Realm realm;
     private LayoutInflater inflater;
@@ -89,9 +88,7 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View showDesc = layoutInflater.inflate(R.layout.show_desc, null, false);
 
-//                HTextView description = showDesc.findViewById(R.id.description);
                 TypeWriterView description = showDesc.findViewById(R.id.description);
-//                typeWriterView = description;
 
                 ImageView imageView = showDesc.findViewById(R.id.drawingImageView);
 
@@ -107,13 +104,10 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                 if (drawingBytes != null) {
 
                     Bitmap drawing = BitmapFactory.decodeByteArray(drawingBytes, 0, drawingBytes.length);
-//                    description.animateText(descriptionString);
 
                     if(drawing != null){
                         imageView.setImageBitmap(drawing);
                     }
-
-
 
 
                 }
@@ -164,7 +158,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
     public class IdeaViewHolder extends RecyclerView.ViewHolder {
 
         public CardView viewForeground;
-//        public RelativeLayout viewBackground;
         private TextView name;
 
 
@@ -174,8 +167,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
             viewForeground = itemView.findViewById(R.id.card_idea);
 
             name = itemView.findViewById(R.id.name);
-
-//            viewBackground = itemView.findViewById(R.id.view_background);
         }
     }
 
@@ -206,7 +197,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                         realm.beginTransaction();
 
                         String name;
-                        String tag;
                         String desc;
 
 
@@ -226,7 +216,6 @@ public class IdeaAdapter extends RealmRecyclerViewAdapter<Idea> {
                             realm.commitTransaction();
 
                             notifyDataSetChanged();
-
                         }
 
                     }

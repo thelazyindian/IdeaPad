@@ -31,10 +31,6 @@
             android:label="@string/title_activity_canvas"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activity.CanvasActivity2"
-            android:label="@string/title_activity_canvas2"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".activity.AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme"></activity>

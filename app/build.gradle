@@ -67,10 +67,12 @@ dependencies {
     implementation 'com.github.mrgames13:SplashScreen:1.0.0'
 
     implementation 'com.github.daniel-stoneuk:material-about-library:2.3.0'
+//    implementation 'com.marverenic.colors:colors:1.1.0'
 
 
 
     implementation project(':app-theme-engine')
+//    implementation project(':colors')
     implementation 'com.github.enricocid:cbl:1.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'
