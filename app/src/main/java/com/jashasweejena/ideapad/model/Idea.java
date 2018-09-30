@@ -19,17 +19,8 @@ public class Idea extends RealmObject {
 
     private String desc; //Represents description of the project.
 
+    private byte[] drawing; //Represents the bitmap of drawing
 
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    private String kind;
 
     public byte[] getDrawing() {
         return drawing;
@@ -38,11 +29,6 @@ public class Idea extends RealmObject {
     public void setDrawing(byte[] drawing) {
         this.drawing = drawing;
     }
-
-    private byte[] drawing;
-
-
-//    private FreeDrawSerializableState drawing;
 
     public long getId() {
         return id;

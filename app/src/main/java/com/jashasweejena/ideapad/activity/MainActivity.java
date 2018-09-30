@@ -1,6 +1,7 @@
 package com.jashasweejena.ideapad.activity;
 
 import android.animation.Animator;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -75,9 +76,7 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
     private Realm realm;
     private LayoutInflater layoutInflater;
     private RealmResults<Idea> listOfIdeas;
-    FreeDrawView mSignatureView;
     private static int RC_SIGN_IN = 123;
-    byte[] bmp;
 
 
     @Override
@@ -87,7 +86,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 
         ButterKnife.bind(this);
 
-
         coordinatorLayout = findViewById(R.id.coordinatorlayout);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -95,16 +93,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
         realm = RealmController.with().getRealm();
 
         setUpRecycler();
-
-//        layoutInflater = this.getLayoutInflater();
-//        final View content = layoutInflater.inflate(R.layout.canvas, null, false);
-//
-//        mSignatureView = content.findViewById(R.id.drawingxyz);
-
-//        final View content2 = layoutInflater.inflate(R.layout.canvas2, null, false);
-//        CanvasView cv = new CanvasView(this);
-//        RelativeLayout parentView = content2.findViewById(R.id.parentView);
-//        parentView.addView(cv);
 
         listOfIdeas = RealmController.getInstance().getAllBooks();
 
@@ -123,7 +111,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
             }
         });
 
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,28 +118,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
             }
         });
 
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        //Pause the animation in case the app is closed and animation is still going on.
-//        recyclerViewAdapter.typeWriterView.removeAnimation();
-//
-//        //Also, dismiss the Dialog showing the description
-//        recyclerViewAdapter.descriptionDialog.dismiss();
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        //Stop the animation in case the app is closed and animation is still going on.
-//        recyclerViewAdapter.typeWriterView.removeAnimation();
-//
-//        //Also, dismiss the Dialog showing the description
-//        recyclerViewAdapter.descriptionDialog.dismiss();
     }
 
 
@@ -171,14 +136,9 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 
     public void setUpRecycler() {
 
-
         //Assign ItemTouchHelper to RecyclerView.
         ItemTouchHelper.SimpleCallback itemTouchHelper = new RecyclerTouchItemHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView);
-
-//        ItemTouchHelper.Callback callback = new DeletionSwipeHelper(0, ItemTouchHelper.START, this, this);
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         //Set up Vertical LinearLayoutManager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -346,55 +306,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
 //        }
 //    }
 
-    private void drawView() {
-
-
-        mSignatureView.setPaintColor(Color.BLACK);
-        mSignatureView.setPaintWidthPx(getResources().getDimensionPixelSize(R.dimen.paint_width));
-        //mSignatureView.setPaintWidthPx(12);
-        mSignatureView.setPaintWidthDp(getResources().getDimension(R.dimen.paint_dpi));
-        //mSignatureView.setPaintWidthDp(6);
-        mSignatureView.setPaintAlpha(255);// from 0 to 255
-        mSignatureView.setResizeBehaviour(ResizeBehaviour.CROP);// Must be one of ResizeBehaviour
-        // values;
-        mSignatureView.setPathRedoUndoCountChangeListener(new PathRedoUndoCountChangeListener() {
-            @Override
-            public void onUndoCountChanged(int undoCount) {
-                // The undoCount is the number of the paths that can be undone
-            }
-
-            @Override
-            public void onRedoCountChanged(int redoCount) {
-                // The redoCount is the number of path removed that can be redrawn
-            }
-        });
-
-        // This listener will be notified every time a new path has been drawn
-        mSignatureView.setOnPathDrawnListener(new PathDrawnListener() {
-            @Override
-            public void onNewPathDrawn() {
-                // The user has finished drawing a path
-            }
-
-            @Override
-            public void onPathStart() {
-                // The user has started drawing a path
-            }
-        });
-
-        mSignatureView.getDrawScreenshot(new FreeDrawView.DrawCreatorListener() {
-            @Override
-            public void onDrawCreated(Bitmap draw) {
-                // The draw Bitmap is the drawn content of the View
-            }
-
-            @Override
-            public void onDrawCreationError() {
-                // Something went wrong creating the bitmap, should never
-                // happen unless the async task has been canceled
-            }
-        });
-    }
 
     private void fabFunction(@Nullable final String desc) {
 
@@ -404,69 +315,93 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
         final EditText editName = content.findViewById(R.id.editName);
         final EditText editTag = content.findViewById(R.id.editTag);
         final EditText editDesc = content.findViewById(R.id.editDesc);
-        final ImageView image = content.findViewById(R.id.drawingImageView);
 
-        if(desc != null){
-            editDesc.setText(desc);
-        }
+        final String name = editName.getText().toString();
+        final String tag = editTag.getText().toString();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Mann mei ladoo phoota?")
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//        builder.setTitle("Mann mei ladoo phoota?")
+//                .setView(content)
+//                .setPositiveButton(android.R.string.ok, null)
+//                .setNegativeButton(android.R.string.cancel, null)
+//                .setNeutralButton(R.string.title_draw, null);
+
+
+
+        // get the center for the clipping circle
+
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Mann mei ladoo phoota?")
                 .setView(content)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setNeutralButton(R.string.title_draw, null)
+                .show();
 
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
 
-                        //Create a new Idea instance which will store information
-                        //regarding the idea in respective fields and go into
-                        //the realm database
+        positiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Create a new Idea instance which will store information
+                //regarding the idea in respective fields and go into
+                //the realm database
 
-                        if (desc == null) {
+                if (desc == null) {
 
-                            if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
-                                Toast.makeText(MainActivity.this, "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();
-                            }
-                            String name = editName.getText().toString();
-                            String tag = editTag.getText().toString();
-                            String desc = editDesc.getText().toString();
+                    if (editName.getText() == null || name.equals("") || name.equals(" ")) {
+                        editName.requestFocus();
+                        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Name field cannot be empty!", Snackbar.LENGTH_SHORT);
+                        snackbar.show();
+                    } else {
 
-                            addIdeaToRealm(name, tag, desc);
-                        }
+                        final String desc = editDesc.getText().toString();
 
-                        else{
-
-                            if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
-                                Toast.makeText(MainActivity.this, "Name field cannot be left blank!", Toast.LENGTH_SHORT).show();
-                            }
-
-                            String name = editName.getText().toString();
-                            String tag = editTag.getText().toString();
-
-                            addIdeaToRealm(name, tag, desc);
-                        }
+                        addIdeaToRealm(name, tag, desc);
+                        dialog.dismiss();
                     }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                }
 
+                else {
+
+                    if (editName.getText() == null || editName.getText().toString().equals("") || editName.getText().toString().equals(" ")) {
+                        editName.requestFocus();
+                        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Name field cannot be empty!", Snackbar.LENGTH_SHORT);
+                        snackbar.show();
+                    } else {
+
+                        String name = editName.getText().toString();
+                        String tag = editTag.getText().toString();
+
+                        addIdeaToRealm(name, tag, desc);
                         dialog.dismiss();
 
                     }
-                })
-                .setNeutralButton(R.string.title_draw, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MainActivity.this, CanvasActivity.class);
-                        startActivity(intent);
-                    }
-                })
-        ;
+                }
+
+                dialog.dismiss();
+            }
 
 
-        AlertDialog dialog = builder.create();
-        // get the center for the clipping circle
+        });
+
+        negativeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        neutralButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CanvasActivity.class);
+                startActivity(intent);
+            }
+        });
 
         final View view = dialog.getWindow().getDecorView();
 
@@ -486,31 +421,6 @@ public class MainActivity extends ATEActivity implements RecyclerTouchItemHelper
         });
 
         dialog.show();
-    }
-
-    public void setByteArray(byte[] bmp) {
-        if (bmp != null) {
-            Log.d(TAG, "setByteArray: " + "not null bmp");
-        }
-        this.bmp = bmp;
-    }
-
-    public void callNotifyDatasetChanged() {
-        recyclerViewAdapter.callNotifyDatasetChanged();
-    }
-
-    public void handleDrawing() {
-
-        Realm r = RealmController.getInstance().getRealm();
-
-        r.beginTransaction();
-        Idea idea = new Idea();
-        idea.setId(System.currentTimeMillis() + RealmController.getInstance().getAllBooks().size() + 1);
-        idea.setName(" ");
-
-        r.copyToRealm(idea);
-        r.commitTransaction();
-
     }
 
     private void handleIntent(){
