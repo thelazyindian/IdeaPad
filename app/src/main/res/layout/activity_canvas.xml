@@ -31,6 +31,7 @@
         android:layout_marginBottom="@dimen/padd_10"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_done_black_24dp"
+        app:fabElevation="@dimen/padd_10"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
 </android.support.design.widget.CoordinatorLayout>

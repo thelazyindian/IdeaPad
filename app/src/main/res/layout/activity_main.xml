@@ -41,6 +41,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/padd_10"
         android:layout_marginBottom="@dimen/padd_10"
+        android:layout_margin="@dimen/fab_margin"
         app:fabElevation="@dimen/padd_10"
         android:src="@drawable/ic_create_black_24dp"/>
 
