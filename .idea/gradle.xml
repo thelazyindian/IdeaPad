@@ -7,11 +7,9 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../../IdeaPad/colors" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/lib" />
-            <option value="$USER_HOME$/app-theme-engine/library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

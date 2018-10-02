@@ -1,6 +1,6 @@
 include ':app', ':lib'
-include ':app-theme-engine'
-project(':app-theme-engine').projectDir = new File('/Users/jashasweejena/app-theme-engine/library')
-
-include ':colors'
-project(':colors').projectDir = new File('/Users/jashasweejena/AndroidStudioProjects/IdeaPad/colors')
+//include ':app-theme-engine'
+//project(':app-theme-engine').projectDir = new File('/Users/jashasweejena/app-theme-engine/library')
+//
+//include ':colors'
+//project(':colors').projectDir = new File('/Users/jashasweejena/AndroidStudioProjects/IdeaPad/colors')
