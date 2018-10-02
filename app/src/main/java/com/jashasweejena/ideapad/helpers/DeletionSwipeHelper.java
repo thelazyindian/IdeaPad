@@ -2,11 +2,11 @@ package com.jashasweejena.ideapad.helpers;
 
 import com.jashasweejena.ideapad.R;
 
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -51,13 +51,13 @@ public class DeletionSwipeHelper extends ItemTouchHelper.SimpleCallback
 	}
 
 	@Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) 
+    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target)
 	{
         return true;
     }
 
 	@Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) 
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction)
 	{
         listener.onSwiped(viewHolder, viewHolder.getAdapterPosition());
     }
