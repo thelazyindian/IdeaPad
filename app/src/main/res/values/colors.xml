@@ -3,7 +3,7 @@
     <resources>
     <color name="colorPrimary">#ecf0f1</color>
     <color name="colorPrimaryDark">#bdc3c7</color>
-    <color name="colorAccent">#FFA000</color>
+    <color name="colorAccent">#26ae60</color>
     <color name="bg_row_background">#fa315b</color>
     <color name="item_name">#535353</color>
     <color name="description">#a9a9a9</color>
