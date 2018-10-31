@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerTouchItem
 
         coordinatorLayout = findViewById(R.id.coordinatorlayout);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         realm = RealmController.with().getRealm();
 
